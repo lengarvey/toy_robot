@@ -12,18 +12,22 @@ class Point
   end
 
   def north
-    Point.new(@x, @y += 1)
+    Point.new(@x, @y + 1)
   end
 
   def south
-    Point.new(@x, @y += -1)
+    Point.new(@x, @y - 1)
+  rescue InvalidArgumentError
+    self
   end
 
   def east
-    Point.new(@x += 1, @y)
+    Point.new(@x + 1, @y)
   end
 
   def west
-    Point.new(@x += -1, @y)
+    Point.new(@x - 1, @y)
+  rescue InvalidArgumentError
+    self
   end
 end

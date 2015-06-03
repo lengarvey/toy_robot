@@ -27,6 +27,10 @@ RSpec.describe 'Point' do
     subject { Point.new(0, 2).south.y }
 
     it { is_expected.to eq 1 }
+
+    it 'refuses to move south too many times' do
+      expect(Point.new(0, 0).south.y).to eq 0
+    end
   end
 
   describe '#east' do
@@ -39,5 +43,9 @@ RSpec.describe 'Point' do
     subject { Point.new(3, 2).west.x }
 
     it { is_expected.to eq 2 }
+
+    it 'refuses to move west too many times' do
+      expect(Point.new(0, 0).west.x).to eq 0
+    end
   end
 end

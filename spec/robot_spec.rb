@@ -30,16 +30,28 @@ RSpec.describe 'Robot' do
     end
 
     context 'when placed' do
-      let(:point) { double('Point', x: 0, y: 0) }
+      let(:point) { double('Point', x: 0, y: 0, north: new_point) }
       let(:facing) { double('Direction', facing: :north) }
+      let(:new_point) { double('Point', x: 0, y: 1) }
 
       before do
         robot.place(point, facing)
       end
 
       it 'should move the robot' do
-        expect(point).to receive(:north)
         robot.move
+        expect(point).to have_received(:north)
+        expect(robot.position).to eq new_point
+      end
+
+      context 'when the point is off the board' do
+        let(:valid_position) { false }
+
+        it 'should not move the robot' do
+          robot.move
+          expect(point).to have_received(:north)
+          expect(robot.position).to eq point
+        end
       end
     end
   end
