@@ -2,8 +2,9 @@ require_relative 'spec_helper'
 require 'robot'
 
 RSpec.describe 'Robot' do
-  let(:robot) { Robot.new() }
-  let(:table) { double('Table') }
+  let(:robot) { Robot.new(table) }
+  let(:table) { double('Table', include?: valid_position) }
+  let(:valid_position) { true }
 
   describe '#place' do
     let(:point) { double('Point', x: 0, y: 0) }
@@ -17,7 +18,29 @@ RSpec.describe 'Robot' do
       robot.place(point, facing)
 
       expect(robot.position).to eq point
-      expect(robot.facing).to eq facing
+      expect(robot.direction).to eq facing
+    end
+  end
+
+  describe '#move' do
+    context 'when not placed' do
+      subject { robot.move }
+
+      it { is_expected.to be_a NullPoint }
+    end
+
+    context 'when placed' do
+      let(:point) { double('Point', x: 0, y: 0) }
+      let(:facing) { double('Direction', facing: :north) }
+
+      before do
+        robot.place(point, facing)
+      end
+
+      it 'should move the robot' do
+        expect(point).to receive(:north)
+        robot.move
+      end
     end
   end
 end
