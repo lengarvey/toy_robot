@@ -20,6 +20,15 @@ RSpec.describe 'Robot' do
       expect(robot.position).to eq point
       expect(robot.direction).to eq facing
     end
+
+    context 'when placing off the table' do
+      let(:valid_position) { false }
+
+      it 'does not place the robot' do
+        robot.place(point, facing)
+        expect(robot.position).to be_a NullPoint
+      end
+    end
   end
 
   describe '#move' do
@@ -35,7 +44,8 @@ RSpec.describe 'Robot' do
       let(:new_point) { double('Point', x: 0, y: 1) }
 
       before do
-        robot.place(point, facing)
+        robot.position = point
+        robot.direction = facing
       end
 
       it 'should move the robot' do

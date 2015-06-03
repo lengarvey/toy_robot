@@ -1,5 +1,5 @@
 class Robot
-  attr_reader :position, :direction
+  attr_accessor :position, :direction
 
   def initialize(table)
     @table = table
@@ -8,8 +8,10 @@ class Robot
   end
 
   def place(position, direction)
-    @position = position
-    @direction = direction
+    if @table.include? position
+      @position = position
+      @direction = direction
+    end
   end
 
   def move
