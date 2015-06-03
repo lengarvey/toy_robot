@@ -16,4 +16,28 @@ RSpec.describe 'Point' do
     expect(Point.new(1, 0).x).to eq 1
     expect(Point.new(0, 2).y).to eq 2
   end
+
+  describe '#north' do
+    subject { Point.new(0, 0).north.y }
+
+    it { is_expected.to eq 1 }
+  end
+
+  describe '#south' do
+    subject { Point.new(0, 2).south.y }
+
+    it { is_expected.to eq 1 }
+  end
+
+  describe '#east' do
+    subject { Point.new(0, 2).east.x }
+
+    it { is_expected.to eq 1 }
+  end
+
+  describe '#west' do
+    subject { Point.new(3, 2).west.x }
+
+    it { is_expected.to eq 2 }
+  end
 end
