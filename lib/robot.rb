@@ -1,5 +1,8 @@
 class Robot
-  def place(point, facing)
-    true
+  attr_reader :position, :facing
+
+  def place(position, facing)
+    @position = position
+    @facing = facing
   end
 end
