@@ -5,10 +5,19 @@ RSpec.describe 'Application' do
   describe '#parse_command' do
     let(:app) { Application.new }
 
-    describe 'PLACE' do
-      context 'with a valid command' do
+    describe 'commands' do
+      let(:robot_command) { app.parse_command(command) }
+
+      describe 'invalid command' do
+        let(:command) { 'FOO 0,0,EAST' }
+
+        it 'creates a null command' do
+          expect(robot_command).to be_a_kind_of NullRobotCommand
+        end
+      end
+
+      describe 'PLACE' do
         let(:command) { 'PLACE 0,0,EAST' }
-        let(:robot_command) { app.parse_command(command) }
 
         it 'creates a valid command' do
           expect(robot_command).to be_a_kind_of RobotCommand
@@ -16,22 +25,43 @@ RSpec.describe 'Application' do
           expect(robot_command.arguments[0]).to be_a Point
         end
       end
-    end
 
-    describe 'MOVE' do
+      describe 'MOVE' do
+        let(:command) { 'MOVE' }
 
-    end
+        it 'creates a valid command' do
+          expect(robot_command).to be_a_kind_of RobotCommand
+          expect(robot_command.action).to eq :move
+          expect(robot_command.arguments.length).to eq 0
+        end
+      end
 
-    describe 'LEFT' do
+      describe 'LEFT' do
+        let(:command) { 'LEFT' }
 
-    end
+        it 'creates a valid command' do
+          expect(robot_command).to be_a_kind_of RobotCommand
+          expect(robot_command.action).to eq :left
+        end
+      end
 
-    describe 'RIGHT' do
+      describe 'RIGHT' do
+        let(:command) { 'RIGHT' }
 
-    end
+        it 'creates a valid command' do
+          expect(robot_command).to be_a_kind_of RobotCommand
+          expect(robot_command.action).to eq :right
+        end
+      end
 
-    describe 'REPORT' do
+      describe 'REPORT' do
+        let(:command) { 'REPORT' }
 
+        it 'creates a valid command' do
+          expect(robot_command).to be_a_kind_of RobotCommand
+          expect(robot_command.action).to eq :report
+        end
+      end
     end
   end
 end
