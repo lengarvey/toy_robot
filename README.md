@@ -10,6 +10,8 @@ The program simulates a robot being placed on a table with a 5x5 surface. The ro
 * __RIGHT__ - turns the robot right
 * __REPORT__ - outputs the position and facing of the robot
 
+The table is a 5,5 square and can be considered a standard cartesian plane.
+
 ## Installing and running:
 
 1. `git clone` the repo
