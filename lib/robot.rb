@@ -8,7 +8,7 @@ class Robot
   end
 
   def place(position, direction)
-    if @table.include? position
+    if position.is_on? @table
       @position = position
       @direction = direction
     end
@@ -17,7 +17,8 @@ class Robot
   def move
     new_position = position.send(direction.facing)
 
-    @position = new_position if @table.include? new_position
+    @position = new_position if new_position.is_on? @table
+    @position
   end
 
   def left
@@ -29,27 +30,34 @@ class Robot
   end
 
   def report
-    to_s
+    puts to_s
+  end
+
+  def nothing
   end
 
   def to_s
-    "#{position},#{direction}"
+    "Robot is: #{position} Facing: #{direction}"
   end
 end
 
 class NullPoint
-  def none
+  def nowhere
     self
   end
 
+  def is_on?(table)
+    false
+  end
+
   def to_s
-    "NO POSITION"
+    "UNPLACED"
   end
 end
 
 class NullDirection
   def facing
-    :none
+    :nowhere
   end
 
   def left

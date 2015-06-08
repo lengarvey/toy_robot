@@ -22,6 +22,10 @@ class Direction
     Direction.new(DIRECTIONS[next_facing_index])
   end
 
+  def to_s
+    facing.to_s.upcase
+  end
+
   private
 
   def valid_input_direction?(direction)

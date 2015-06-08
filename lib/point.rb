@@ -30,4 +30,12 @@ class Point
   rescue InvalidArgumentError
     self
   end
+
+  def is_on?(table)
+    table.include? self
+  end
+
+  def to_s
+    "#{x},#{y}"
+  end
 end

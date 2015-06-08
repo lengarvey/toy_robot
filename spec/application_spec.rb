@@ -2,65 +2,82 @@ require_relative 'spec_helper'
 require 'application'
 
 RSpec.describe 'Application' do
-  describe '#parse_command' do
-    let(:app) { Application.new }
+  let(:app) { Application.new }
 
-    describe 'commands' do
-      let(:robot_command) { app.parse_command(command) }
-
-      describe 'invalid command' do
-        let(:command) { 'FOO 0,0,EAST' }
-
-        it 'creates a null command' do
-          expect(robot_command).to be_a_kind_of NullRobotCommand
-        end
+  describe '#execute' do
+    context 'for an unplaced robot' do
+      it 'should ignore a move command' do
+        expect {
+          app.execute('MOVE')
+        }.to_not change{ app.robot.position }
       end
 
-      describe 'PLACE' do
-        let(:command) { 'PLACE 0,0,EAST' }
-
-        it 'creates a valid command' do
-          expect(robot_command).to be_a_kind_of RobotCommand
-          expect(robot_command.action).to eq :place
-          expect(robot_command.arguments[0]).to be_a Point
-        end
+      it 'should ignore a left command' do
+        expect {
+          app.execute('LEFT')
+        }.to_not change{ app.robot.direction }
       end
 
-      describe 'MOVE' do
-        let(:command) { 'MOVE' }
+      it 'should ignore a right command' do
+        expect {
+          app.execute('right')
+        }.to_not change{ app.robot.direction }
+      end
+    end
 
-        it 'creates a valid command' do
-          expect(robot_command).to be_a_kind_of RobotCommand
-          expect(robot_command.action).to eq :move
-          expect(robot_command.arguments.length).to eq 0
-        end
+    describe 'placing a robot' do
+      it 'should place the robot' do
+        app.execute('PLACE 0,0,NORTH')
+
+        expect(app.robot.position.x).to eq 0
+        expect(app.robot.position.x).to eq 0
+        expect(app.robot.direction.facing).to eq :north
+      end
+    end
+
+    context 'after placing the robot' do
+      before do
+        app.execute('PLACE 0,0,NORTH')
       end
 
-      describe 'LEFT' do
-        let(:command) { 'LEFT' }
-
-        it 'creates a valid command' do
-          expect(robot_command).to be_a_kind_of RobotCommand
-          expect(robot_command.action).to eq :left
+      it 'can be moved, but not off the edge' do
+        4.times do
+          expect {
+            app.execute('MOVE')
+          }.to change{ app.robot.position }
         end
+
+        expect {
+          app.execute('MOVE')
+        }.to_not change{ app.robot.position }
       end
 
-      describe 'RIGHT' do
-        let(:command) { 'RIGHT' }
+      it 'can be turned' do
+        expect {
+          app.execute('LEFT')
+        }.to change{ app.robot.direction }
 
-        it 'creates a valid command' do
-          expect(robot_command).to be_a_kind_of RobotCommand
-          expect(robot_command.action).to eq :right
-        end
+        expect {
+          app.execute('right')
+        }.to change{ app.robot.direction }
+      end
+    end
+
+    describe 'the robot given a script of commands' do
+      let(:script) do
+        [
+          'PLACE 1,2,EAST',
+          'MOVE',
+          'MOVE',
+          'LEFT',
+          'MOVE',
+        ]
       end
 
-      describe 'REPORT' do
-        let(:command) { 'REPORT' }
+      it 'should report the correct position and facing' do
+        script.each {|s| app.execute(s) }
 
-        it 'creates a valid command' do
-          expect(robot_command).to be_a_kind_of RobotCommand
-          expect(robot_command.action).to eq :report
-        end
+        expect(app.robot.to_s).to eq "Robot is: 3,3 Facing: NORTH"
       end
     end
   end

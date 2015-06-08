@@ -3,11 +3,11 @@ require 'robot'
 
 RSpec.describe 'Robot' do
   let(:robot) { Robot.new(table) }
-  let(:table) { double('Table', include?: valid_position) }
+  let(:table) { double('Table') }
   let(:valid_position) { true }
 
   describe '#place' do
-    let(:point) { double('Point', x: 0, y: 0) }
+    let(:point) { double('Point', x: 0, y: 0, is_on?: valid_position) }
     let(:facing) { double('Direction', facing: :north) }
 
     it 'allows valid input' do
@@ -39,9 +39,9 @@ RSpec.describe 'Robot' do
     end
 
     context 'when placed' do
-      let(:point) { double('Point', x: 0, y: 0, north: new_point) }
+      let(:point) { double('Point', x: 0, y: 0, north: new_point, is_on?: valid_position) }
       let(:facing) { double('Direction', facing: :north) }
-      let(:new_point) { double('Point', x: 0, y: 1) }
+      let(:new_point) { double('Point', x: 0, y: 1, is_on?: valid_position) }
 
       before do
         robot.position = point

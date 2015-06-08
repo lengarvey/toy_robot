@@ -33,5 +33,9 @@ end
 
 class NullRobotCommand
   def action
+    :nothing
+  end
+
+  def arguments
   end
 end
