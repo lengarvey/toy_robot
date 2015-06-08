@@ -2,6 +2,14 @@
 
 An example implementation of the common toy robot problem.
 
+The program simulates a robot being placed on a table with a 5x5 surface. The robot can move in any cardinal direction and ignores any commands which would cause it to fall off the table. Valid commands are:
+
+* __PLACE X,Y,DIRECTION__ - places the robot in any spot facing any direction on the table. Will be ignored if this location is invalid for the robot
+* __MOVE__ - moves the robot ahead one spot. Will not move the robot if that would cause the robot to go off the table
+* __LEFT__ - turns the robot left
+* __RIGHT__ - turns the robot right
+* __REPORT__ - outputs the position and facing of the robot
+
 ## Installing and running:
 
 1. `git clone` the repo
